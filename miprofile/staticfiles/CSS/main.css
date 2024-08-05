@@ -1,0 +1,33 @@
+body {
+    background-color: #121212; /* Dark background for a hacker aesthetic */
+    color: #e0e0e0; /* Light text color */
+    font-family: 'Courier New', Courier, monospace; /* Monospace font for a tech feel */
+    background: linear-gradient(45deg, rgba(0, 255, 0, 0.1), rgba(0, 255, 0, 0.05)), url('path-to-your-background-image.jpg');
+    background-blend-mode: overlay; /* Blends gradient with the background image */
+    background-size: cover; /* Ensures background covers the entire body */
+    background-attachment: fixed; /* Keeps the background fixed while scrolling */
+    animation: backgroundAnimation 15s linear infinite; /* Animation for a subtle moving effect */
+}
+
+/* Animation for background movement */
+@keyframes backgroundAnimation {
+    0% {
+        background-position: 0% 0%;
+    }
+    100% {
+        background-position: 100% 100%;
+    }
+}
+
+#profile-wrapper{
+    text-align: center;
+}
+#profile-pic{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+

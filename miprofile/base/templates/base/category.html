@@ -1,0 +1,141 @@
+{% extends "base/blog.html" %}
+
+{% block content %}
+<div class="mb-4">
+    <label for="categorySelect">Choose a category:</label>
+    <select id="categorySelect" class="form-select" onchange="location = this.value;">
+        {% for cat in all_categories %}
+            <option value="{% url 'category' cat.id %}" {% if cat.id == category.id %}selected{% endif %}>{{ cat.name }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+{% if md_files %}
+    <h4><em>Posts in {{ category.name }}</em></h4>
+    <div class="row">
+        {% for filename, html_content in md_files.items %}
+            <div class="col-md-4 mb-4">
+                <div class="card mb-4 hacker-card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ filename }}</h5>
+                        <div class="card-text content-truncated">
+                            <!-- Render Markdown HTML content -->
+                            {{ html_content|slice:":300"|safe }}
+                            <span class="more-content">{{ html_content|safe }}</span>
+                        </div>
+                        <a href="#" class="btn btn-primary read-more-toggle">Read More</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No documentation found for this category.</p>
+{% endif %}
+
+<!-- Add JavaScript to handle the "Read More" functionality -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var toggles = document.querySelectorAll('.read-more-toggle');
+    var currentExpanded = null;
+
+    toggles.forEach(function(toggle) {
+        toggle.addEventListener('click', function(event) {
+            event.preventDefault();
+            var cardText = this.previousElementSibling;
+
+            // Collapse the previously expanded content
+            if (currentExpanded && currentExpanded !== this) {
+                currentExpanded.previousElementSibling.classList.add('content-truncated');
+                currentExpanded.textContent = 'Read More';
+            }
+
+            // Toggle the clicked content
+            if (cardText.classList.contains('content-truncated')) {
+                cardText.classList.remove('content-truncated');
+                this.textContent = 'Read Less';
+                currentExpanded = this;
+            } else {
+                cardText.classList.add('content-truncated');
+                this.textContent = 'Read More';
+                currentExpanded = null;
+            }
+        });
+    });
+});
+</script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+.hacker-card {
+    background: #222; /* Slightly lighter dark background */
+    color: #0f0; /* Green text to mimic old terminal displays */
+    border: 1px solid #0f0; /* Green border */
+    font-family: 'VT323', monospace; /* Monospaced font for tech vibe */
+}
+
+.hacker-card .card-body {
+    position: relative;
+}
+
+.content-truncated {
+    position: relative;
+    max-height: 150px; /* Adjust as needed */
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.content-truncated::after {
+    content: '...';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(to top, #222, transparent);
+    width: 100%;
+    height: 30px; /* Adjust as needed */
+    color: #0f0; /* Green ellipsis */
+}
+
+.read-more-toggle {
+    display: block;
+    margin-top: 10px;
+    color: #0f0; /* Green text */
+    text-decoration: none;
+    border: 1px solid #0f0;
+    padding: 5px 10px;
+    font-family: 'VT323', monospace;
+    transition: background-color 0.3s ease;
+}
+
+.read-more-toggle:hover {
+    background-color: #0f0;
+    color: #222; /* Dark text for contrast on hover */
+}
+
+.card-text img {
+    max-width: 100%; /* Make images responsive */
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* Ensure images are block elements */
+    margin: 10px 0; /* Add some spacing */
+}
+
+.card-text h1, .card-text h2, .card-text h3, .card-text h4, .card-text h5, .card-text h6 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.card-text p {
+    margin-bottom: 10px;
+}
+
+.card-text a {
+    color: #0f0; /* Green links */
+    text-decoration: none;
+}
+
+.card-text a:hover {
+    text-decoration: underline; /* Underline links on hover */
+}
+</style>
+{% endblock %}

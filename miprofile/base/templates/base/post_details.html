@@ -1,0 +1,16 @@
+{% extends "base/blog.html" %}
+
+{% block content %}
+<h4><em>Blog Posts</em></h4>
+{% for post in md_files %}
+<div class="card mb-4">
+    <div class="card-body card-body-custom">
+        <h2 class="card-title">{{ post.filename }}</h2>
+        <div class="card-text">{{ post.content|safe }}</div>
+        <a href="{% url 'post_details' post.filename %}" class="btn btn-primary">Read More</a>
+    </div>
+</div>
+{% empty %}
+<p>No posts available.</p>
+{% endfor %}
+{% endblock %}

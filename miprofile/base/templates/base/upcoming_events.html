@@ -1,0 +1,25 @@
+{% extends "base/blog.html" %}
+
+{% block content %}
+<h4><em>Upcoming Events</em></h4>
+
+{% if events %}
+    <div class="row">
+        {% for event in events %}
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ event.title|default:"No title available" }}</h5>
+                        <p class="card-text">Start Date: {{ event.start|date:"Y-m-d H:i" }}</p>
+                        <p class="card-text">End Date: {{ event.finish|date:"Y-m-d H:i" }}</p>
+                        <p class="card-text">Location: {{ event.location|default:"Not specified" }}</p>
+                        <a href="{{ event.url|default:'#' }}" class="btn btn-primary" target="_blank">More Info</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No upcoming events available.</p>
+{% endif %}
+{% endblock %}
